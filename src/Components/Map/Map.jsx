@@ -9,7 +9,13 @@ import {
 import LocationOnOutlined from "@material-ui/icons/LocationOnOutlined";
 import Rating from "@material-ui/lab/Rating";
 import useStyles from "./styles";
-function Map({ setCoordinates, setBounds, coordinates, places }) {
+function Map({
+  setCoordinates,
+  setBounds,
+  coordinates,
+  places,
+  setChildClick,
+}) {
   const classes = useStyles();
   const isDesktop = useMediaQuery("(min-width:600px)");
 
@@ -26,10 +32,10 @@ function Map({ setCoordinates, setBounds, coordinates, places }) {
           setCoordinates({ lat: e.center.lat, lng: e.center.lng });
           setBounds({ ne: e.marginBounds.ne, sw: e.marginBounds.sw });
         }}
-        onChildClick={""}>
+        onChildClick={(child) => setChildClick(child)}>
         {places?.map((place, i) => (
           <div
-            className={classes.markerContainer}
+              className={classes.markerContainer}
             lat={Number(place.latitude)}
             lng={Number(place.longitude)}
             key={i}>
