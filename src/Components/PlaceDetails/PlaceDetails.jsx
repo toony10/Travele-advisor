@@ -16,8 +16,9 @@ import Rating from "@material-ui/lab/Rating";
 import useStayles from "./styles";
 import { Place, Title } from "@material-ui/icons";
 
-function PlaceDetails({ place }) {
+function PlaceDetails({ place ,selected,refProp}) {
   const classes = useStayles();
+  if (selected) refProp?.current?.scrollIntoView({behavior:"smooth",block:"start"})
   return (
     <div>
       <Card elevation={6}>
