@@ -57,7 +57,7 @@ function List ( { places, childClicked, isLoading } )
           </FormControl>
           <Grid container spacing={ 3 } className={ classes.list }>
             { places?.map( ( place, i ) => (
-              <Grid item key={ i } xs={ 12 }>
+              <Grid ref={elRefs[i]} item key={ i } xs={ 12 }>
                 <PlaceDetails place={ place } selected={ Number(childClicked) === i } refProp={ elRefs[ i ] } />
               </Grid>
             ) ) }
