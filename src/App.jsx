@@ -9,22 +9,25 @@ import { FlashAuto } from "@material-ui/icons";
 
 function App() {
   const [places, setPlaces] = useState([]);
+  const [filteradPlaces, setFilteradPlaces] = useState([]);
   const [coordinates, setCoordinates] = useState({});
-  const [ bounds, setBounds ] = useState( {} );
-  const [ childClicked, setChildClicked ] = useState( null );
-  const [ isLoading, setIsLoading ] = useState( false );
+  const [bounds, setBounds] = useState({});
+  const [childClicked, setChildClicked] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [type, setType] = useState("restaurants");
+  const [rating, setRating] = useState("");
 
-  useEffect( () =>
-  {
-    setIsLoading( true );
+  useEffect(() => {
+    setIsLoading(true);
 
     if (bounds.sw && bounds.ne) {
-      getPlacesData(bounds.sw, bounds.ne).then((data) => {
-        setPlaces( data );
-        setIsLoading( false )
+      getPlacesData(type, bounds.sw, bounds.ne).then((data) => {
+        setPlaces(data);
+        setFilteradPlaces([]);
+        setIsLoading(false);
       });
     }
-  }, [coordinates, bounds]);
+  }, [type, coordinates, bounds]);
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(
@@ -34,20 +37,34 @@ function App() {
     );
   }, []);
 
+  useEffect(() => {
+    const filteradPlaces = places.filter((place) => place.rating > rating);
+
+    setFilteradPlaces(filteradPlaces);
+  }, [rating]);
+
   return (
     <>
       <CssBaseline />
       <Header />
       <Grid container spacing={3} style={{ width: "100%" }}>
         <Grid item xs={12} md={4}>
-          <List places={ places } childClicked={ childClicked } isLoading={isLoading} />
+          <List
+            places={filteradPlaces.length ? filteradPlaces : places}
+            childClicked={childClicked}
+            isLoading={isLoading}
+            type={type}
+            setType={setType}
+            rating={rating}
+            setRating={setRating}
+          />
         </Grid>
         <Grid item xs={12} md={8}>
           <Map
             setCoordinates={setCoordinates}
             setBounds={setBounds}
             coordinates={coordinates}
-            places={ places }
+            places={filteradPlaces.length ? filteradPlaces : places}
             setChildClicked={setChildClicked}
           />
         </Grid>
